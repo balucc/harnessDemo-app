@@ -42,7 +42,6 @@ pipeline:
                     shell: Sh
                     command: |-
                       npm install
-                      npm run build
                       func pack       
                       zip -r function.zip .
                     envVariables:
