@@ -42,7 +42,8 @@ pipeline:
                     shell: Sh
                     command: |-
                       npm install -g azure-functions-core-tools@4 --unsafe-perm true
-                      func pack --build-native-deps
+                      func init --javascript
+                      func pack --build-native-deps --javascript
                     envVariables:
                       ARM_CLIENT_ID: <+secrets.getValue("client_id_balu")>
                       ARM_CLIENT_SECRET: <+secrets.getValue("client_secret_balu")>
