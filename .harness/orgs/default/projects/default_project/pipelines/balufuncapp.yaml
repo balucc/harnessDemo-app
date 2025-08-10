@@ -50,6 +50,7 @@ pipeline:
                           --container-name demoapp \
                           --file function.zip \
                           --name function.zip \
+                          --overwrite \
                           --auth-mode key \
                           --account-key "$STORAGE_ACCOUNT_KEY"
                     envVariables:
