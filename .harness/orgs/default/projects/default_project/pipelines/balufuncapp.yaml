@@ -110,6 +110,12 @@ pipeline:
                     image: baluhaness.azurecr.io/node-azurecli:latest
                     shell: Sh
                     command: |-
+                      # Login with Service Principal
+                      az login --service-principal \
+                        --username $ARM_CLIENT_ID \
+                        --password $ARM_CLIENT_SECRET \
+                        --tenant $ARM_TENANT_ID
+
                       # Download zip from Azure Storage to the runner
                       az storage blob download \
                         --account-name fnharnessappstorage \
