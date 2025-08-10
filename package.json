@@ -1,10 +1,10 @@
 {
-  "name": "helloworld-node-demo",
+  "name": "node-hello-world",
   "version": "1.0.0",
-  "description": "Hello World for Docker Init",
-  "main": "app.js",
+  "description": "A simple Hello World Node.js app for Azure Functions",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "func start"
   },
   "author": "",
   "license": "ISC"
