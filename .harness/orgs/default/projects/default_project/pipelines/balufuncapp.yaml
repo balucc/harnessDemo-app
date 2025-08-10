@@ -41,18 +41,8 @@ pipeline:
                     image: baluhaness.azurecr.io/node-azurecli:latest
                     shell: Sh
                     command: |-
-                      apt-get update && apt-get install -y zip
-                      npm install  
-                      zip -r function.zip .
-
-                      az storage blob upload \
-                          --account-name fnharnessappstorage \
-                          --container-name demoapp \
-                          --file function.zip \
-                          --name function.zip \
-                          --overwrite \
-                          --auth-mode key \
-                          --account-key "$STORAGE_ACCOUNT_KEY"
+                      npm install -g azure-functions-core-tools@4 --unsafe-perm true
+                      func pack --build-native-deps
                     envVariables:
                       ARM_CLIENT_ID: <+secrets.getValue("client_id_balu")>
                       ARM_CLIENT_SECRET: <+secrets.getValue("client_secret_balu")>
