@@ -42,8 +42,9 @@ pipeline:
                     shell: Sh
                     command: |-
                       apt-get update && apt-get install -y zip
-                      npm install  
-                      zip -r function.zip .
+                      npm install -g azure-functions-core-tools@4 --unsafe-perm true
+                      func pack --build-native-deps
+
 
                       az storage blob upload \
                           --account-name fnharnessappstorage \
