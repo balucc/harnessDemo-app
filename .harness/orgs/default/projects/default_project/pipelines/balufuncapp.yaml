@@ -120,8 +120,8 @@ pipeline:
                       az storage blob download \
                         --account-name fnharnessappstorage \
                         --container-name demoapp \
-                        --name function.zip \
-                        --file function.zip \
+                        --name harness.zip \
+                        --file harness.zip \
                         --auth-mode key \
                         --account-key "$STORAGE_ACCOUNT_KEY"
 
@@ -129,7 +129,7 @@ pipeline:
                       az functionapp deployment source config-zip \
                         --resource-group DemofuncApp \
                         --name harnessapp \
-                        --src function.zip
+                        --src harness.zip
                     envVariables:
                       ARM_CLIENT_ID: <+secrets.getValue("client_id_balu")>
                       ARM_CLIENT_SECRET: <+secrets.getValue("client_secret_balu")>
