@@ -58,3 +58,74 @@ pipeline:
                       ARM_SUBSCRIPTION_ID: <+secrets.getValue("subscription_id_balu")>
                       ARM_TENANT_ID: <+secrets.getValue("tenant_id_balu")>
                       STORAGE_ACCOUNT_KEY: <+secrets.getValue("balusg-sec")>
+    - stage:
+        name: Approve Deployment
+        identifier: Approve_Deployment
+        description: ""
+        type: Approval
+        spec:
+          execution:
+            steps:
+              - step:
+                  name: Approve
+                  identifier: Approve
+                  type: HarnessApproval
+                  timeout: 1d
+                  spec:
+                    approvalMessage: |-
+                      Please review the following information
+                      and approve the pipeline progression
+                    includePipelineExecutionHistory: true
+                    approvers:
+                      minimumCount: 1
+                      disallowPipelineExecutor: false
+                      userGroups:
+                        - Balu_Pipeline
+                    isAutoRejectEnabled: false
+                    approverInputs: []
+        tags: {}
+    - stage:
+        name: Deploy to functionapp
+        identifier: Deploy_to_functionapp
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+            override: true
+          buildIntelligence:
+            enabled: true
+          infrastructure:
+            useFromStage: Build
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Deploy
+                  identifier: Deploy
+                  spec:
+                    connectorRef: baluacr
+                    image: baluhaness.azurecr.io/node-azurecli:latest
+                    shell: Sh
+                    command: |-
+                      # Download zip from Azure Storage to the runner
+                      az storage blob download \
+                        --account-name fnharnessappstorage \
+                        --container-name demoapp \
+                        --name function.zip \
+                        --file function.zip \
+                        --auth-mode key \
+                        --account-key "$STORAGE_ACCOUNT_KEY"
+
+                      # Deploy to Azure Function App
+                      az functionapp deployment source config-zip \
+                        --resource-group DemofuncApp \
+                        --name harnessapp \
+                        --src function.zip
+                    envVariables:
+                      ARM_CLIENT_ID: <+secrets.getValue("client_id_balu")>
+                      ARM_CLIENT_SECRET: <+secrets.getValue("client_secret_balu")>
+                      ARM_SUBSCRIPTION_ID: <+secrets.getValue("subscription_id_balu")>
+                      ARM_TENANT_ID: <+secrets.getValue("tenant_id_balu")>
+                      STORAGE_ACCOUNT_KEY: <+secrets.getValue("balusg-sec")>
