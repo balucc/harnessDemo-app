@@ -41,7 +41,8 @@ pipeline:
                     image: baluhaness.azurecr.io/node-azurecli:latest
                     shell: Sh
                     command: |-
-                      npm install   
+                      apt-get update && apt-get install -y zip
+                      npm install  
                       zip -r function.zip .
                     envVariables:
                       ARM_CLIENT_ID: <+secrets.getValue("client_id_balu")>
