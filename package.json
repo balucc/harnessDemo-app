@@ -1,11 +1,13 @@
 {
-  "name": "node-hello-world",
+  "name": "azure-function-hello-node",
   "version": "1.0.0",
-  "description": "A simple Hello World Node.js app for Azure Functions",
+  "description": "Hello World Azure Function (Node.js) - returns a simple HTML page",
   "main": "index.js",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "start": "func start"
   },
-  "author": "",
-  "license": "ISC"
+  "dependencies": {}
 }
