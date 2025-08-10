@@ -44,8 +44,17 @@ pipeline:
                       apt-get update && apt-get install -y zip
                       npm install  
                       zip -r function.zip .
+
+                      az storage blob upload \
+                          --account-name fnharnessappstorage \
+                          --container-name demoapp \
+                          --file myfunction.zip \
+                          --name myfunction.zip \
+                          --auth-mode key \
+                          --account-key "$STORAGE_ACCOUNT_KEY"
                     envVariables:
                       ARM_CLIENT_ID: <+secrets.getValue("client_id_balu")>
                       ARM_CLIENT_SECRET: <+secrets.getValue("client_secret_balu")>
                       ARM_SUBSCRIPTION_ID: <+secrets.getValue("subscription_id_balu")>
                       ARM_TENANT_ID: <+secrets.getValue("tenant_id_balu")>
+                      STORAGE_ACCOUNT_KEY: <+secrets.getValue("balusg-sec")>
