@@ -48,8 +48,8 @@ pipeline:
                       az storage blob upload \
                           --account-name fnharnessappstorage \
                           --container-name demoapp \
-                          --file myfunction.zip \
-                          --name myfunction.zip \
+                          --file function.zip \
+                          --name function.zip \
                           --auth-mode key \
                           --account-key "$STORAGE_ACCOUNT_KEY"
                     envVariables:
