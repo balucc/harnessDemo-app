@@ -41,15 +41,19 @@ pipeline:
                     image: baluhaness.azurecr.io/node-azurecli:latest
                     shell: Sh
                     command: |-
-                      npm install -g azure-functions-core-tools@4 --unsafe-perm true
-                      func init --javascript
-                      func pack --build-native-deps --javascript
+                      apt-get update && apt-get install -y zip
+                      npm ci --omit=dev
+                      npm run build
+                      npm prune --omit=dev
+
+                      zip -r "funcapp.zip" . \
+                          -x ".git/*" ".github/*" ".vscode/*" "local.settings.json" "*.log" "tests/*" "test/*"
 
                       az storage blob upload \
                           --account-name fnharnessappstorage \
                           --container-name demoapp \
-                          --file harness.zip \
-                          --name harness.zip \
+                          --file funcapp.zip \
+                          --name funcapp.zip \
                           --overwrite \
                           --auth-mode key \
                           --account-key "$STORAGE_ACCOUNT_KEY"
@@ -120,8 +124,8 @@ pipeline:
                       az storage blob download \
                         --account-name fnharnessappstorage \
                         --container-name demoapp \
-                        --name harness.zip \
-                        --file harness.zip \
+                        --name funcapp.zip \
+                        --file funcapp.zip \
                         --auth-mode key \
                         --account-key "$STORAGE_ACCOUNT_KEY"
 
@@ -129,7 +133,7 @@ pipeline:
                       az functionapp deployment source config-zip \
                         --resource-group DemofuncApp \
                         --name harnessapp \
-                        --src harness.zip
+                        --src funcapp.zip
                     envVariables:
                       ARM_CLIENT_ID: <+secrets.getValue("client_id_balu")>
                       ARM_CLIENT_SECRET: <+secrets.getValue("client_secret_balu")>
