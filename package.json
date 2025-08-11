@@ -1,20 +1,14 @@
 {
-  "name": "hello-world-function",
+  "name": "demoapp",
   "version": "1.0.0",
-  "description": "A simple hello world function for Azure Functions",
-  "main": "index.js",
+  "description": "",
   "scripts": {
-    "start": "node index.js",
-    "deploy": "az functionapp deploy"
+    "start": "func start",
+    "test": "echo \"No tests yet...\""
   },
   "dependencies": {
-    "azure-functions": "^3.0.0"
+    "@azure/functions": "^4.0.0"
   },
-  "devDependencies": {
-    "azure-functions-core-tools": "^4.0.0"
-  },
-  "engines": {
-    "node": "20.x"
-  },
-  "license": "ISC"
+  "devDependencies": {},
+  "main": "src/{index.js,functions/*.js}"
 }
