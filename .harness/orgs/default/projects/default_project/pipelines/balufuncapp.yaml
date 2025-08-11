@@ -43,7 +43,14 @@ pipeline:
                     command: |-
                       apt-get update && apt-get install -y zip
                       npm ci --omit=dev
-                      npm run build
+
+                      if npm run | grep -qE '^\s*build'; then
+                        echo "Found build script. Running: npm run build"
+                        npm run build
+                      else
+                        echo "No build script found. Skipping."
+                      fi
+
                       npm prune --omit=dev
 
                       zip -r "funcapp.zip" . \
